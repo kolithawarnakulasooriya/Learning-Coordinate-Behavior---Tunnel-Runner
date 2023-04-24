@@ -25,7 +25,7 @@ class TextPreConditionDetail(TextElement):
             str(f"<p style=\"{style}\"> No +ve, Not Active (m)= {round(p.negetive.m,3)}</p>"),
             str(f"<p style=\"{style};font-weight: 800\"> Corr(P,N) = {round(p.cna,3)}</p>"),
             str(f"<p style=\"{style};font-weight: 800; color: red\"> Relevance = {round(p.relevance,3)}</p>"),
-            str(f"<p style=\"{style};font-weight: 800; color: green\"> Reliability = {round(p.reliability,3)}</p>"),
+            str(f"<p style=\"{style};font-weight: 800; color: green\"> Reliability = {round(p.current_reliability,3)}</p>"),
         ]
         s = ""
         for i in r1:
@@ -60,7 +60,21 @@ model_params = {
         30
     ),
     "Kp": mesa.visualization.Slider(
-        "Learning Coefficient",
+        "Kp",
+        0.1,
+        0,
+        1,
+        0.05
+    ),
+    "Ki": mesa.visualization.Slider(
+        "Ki",
+        0.01,
+        0,
+        1,
+        0.01
+    ),
+    "alpha": mesa.visualization.Slider(
+        "Alpha",
         0.05,
         0,
         1,

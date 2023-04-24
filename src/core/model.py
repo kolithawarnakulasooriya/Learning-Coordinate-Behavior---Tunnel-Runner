@@ -32,6 +32,7 @@ class PreCondition:
         self.cna =0
         self.relevance =0
         self.reliability =0
+        self.current_reliability = 0
 
     def active_and_positive(self, v):
         self.positive.j += v
@@ -56,7 +57,7 @@ class PreCondition:
 
 class Model(mesa.Model):
 
-    def __init__(self, agents_count=1, Kp = 0.01, width = 100, height=100):
+    def __init__(self, agents_count=1, alpha = 0.01, Kp = 0.1, Ki = 0.01, width = 100, height=100):
 
         self.size = (width, height)
         self.grid = mesa.space.MultiGrid(width, height, torus=True)
@@ -66,7 +67,9 @@ class Model(mesa.Model):
         self.select_strategy = INITIAL_STRATEGY_BOUNDARY
         self.max_agent_count = agents_count
         self.agents_count = agents_count
-        self.kp = Kp
+        self.Kp = Kp
+        self.Ki = Ki
+        self.alpha = alpha
         self.datacollector = DataCollector(model_reporters={"Strategy_Coefficient": lambda m: m.select_strategy})
 
         # initiating pre conditions list
@@ -157,13 +160,27 @@ class Model(mesa.Model):
         pre_stay_and_go = self.preconditions[0] # stage and go
         pre_jump_and_go = self.preconditions[1] # jump and go
 
-        # is jump and go is more reliable, increase the selection rate of jump and go
-        if(pre_stay_and_go.reliability < pre_jump_and_go.reliability):
-            self.select_strategy -= self.select_strategy * self.kp
-        elif(pre_stay_and_go.reliability > pre_jump_and_go.reliability):
-            self.select_strategy += self.select_strategy * self.kp
+        k_stay_and_go =  self.Kp * (2 - pre_stay_and_go.relevance) + self.Ki * pre_stay_and_go.reliability
+        k_jump_and_go =  self.Kp * (2 - pre_jump_and_go.relevance) + self.Ki * pre_jump_and_go.reliability
+    
+        #is jump and go is more reliable, increase the selection rate of jump and go
+        if(k_stay_and_go < k_jump_and_go):
+            self.select_strategy -= self.select_strategy * self.alpha
+        elif(k_stay_and_go > k_jump_and_go):
+            self.select_strategy += self.select_strategy * self.alpha
         else:
             self.select_strategy = self.select_strategy
+
+        pre_stay_and_go.reliability = 0
+        pre_jump_and_go.reliability = 0
+
+        # is jump and go is more reliable, increase the selection rate of jump and go
+        # if(pre_stay_and_go.reliability < pre_jump_and_go.reliability):
+        #     self.select_strategy -= self.select_strategy * self.kp
+        # elif(pre_stay_and_go.reliability > pre_jump_and_go.reliability):
+        #     self.select_strategy += self.select_strategy * self.kp
+        # else:
+        #     self.select_strategy = self.select_strategy
 
         # end with maximum value of the selected strategy
         if(self.select_strategy > 1):
@@ -215,7 +232,8 @@ class Model(mesa.Model):
             # coor(P,A) - coor(N,A)
             p.relevance = p.cpa - p.cna
             # calculate reliability of the action and behavior
-            p.reliability = calculate_reliability(p)
+            p.reliability += calculate_reliability(p)
+            p.current_reliability = calculate_reliability(p)
 
 
         
