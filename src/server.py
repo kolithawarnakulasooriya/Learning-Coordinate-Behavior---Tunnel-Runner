@@ -1,7 +1,7 @@
 import mesa
 import math
-from core import model
-from core.agents import TunnelAgent, TravellerAgent, OpponentAgent
+from .core import model
+from .core.agents import TunnelAgent, TravellerAgent, OpponentAgent
 from mesa.visualization.modules import TextElement, ChartModule
 
 style = "margin-top: 0; margin-bottom: 0rem; font-size: 13px; font-weight: 500;"
@@ -98,5 +98,5 @@ server = mesa.visualization.ModularServer(
 )
 server.port = 8521
 
-if __name__ == '__main__':
+def main():
     server.launch()
