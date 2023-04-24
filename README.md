@@ -1,7 +1,6 @@
 # Tunnel Runner
 
-Implement to observe how agents move inside a tunnel with full of opponents with minimum casualities. There are two major 
-strategies were used. First one is jump and go. when a agent see an opponent infront of him, then agent jumps to the opposit side of the agent and carry forward. second is wait and see,  when a agent see an opponent infront of him, agent waits until the opponent passed out. Then move forward. After few iterations, agents learn and select which behavior should use to cross the tunnel from these two strategies.
+Implement to observe how agents move inside a tunnel full of opponents with minimum casualties. There are two strategies used. The first strategy  called <b>jump and go</b>. When an agent sees an opponent in front of him, then the agent jumps to the opposite side of the opponent agent and moves forward. The second strategy is called <b>wait and see</b>. When an agent sees an opponent in front of him, the agent waits until the opponent passes out. Then move forward. After a few iterations, agents learn and select which behavior needs to be used to cross the tunnel from these two strategies.
 
 ![image](https://github.com/kolithawarnakulasooriya/Learning-Coordinate-Behavior-Tunnel-Runner/blob/main/p1.png)
 
