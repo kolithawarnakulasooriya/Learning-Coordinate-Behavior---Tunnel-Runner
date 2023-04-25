@@ -137,6 +137,5 @@ class TravellerAgent(mesa.Agent):
             traveller_agents = [x for x in self.model.schedule.agents if type(x) == TravellerAgent]
             
             if len(traveller_agents) == 0:
-                print(traveller_agents)
                 self.model.agents_count = self.model.max_agent_count
                 self.model.update_strategy_coefficient()

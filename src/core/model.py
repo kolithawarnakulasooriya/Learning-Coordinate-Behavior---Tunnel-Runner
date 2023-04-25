@@ -231,7 +231,7 @@ class Model(mesa.Model):
             p.cna = calculate_PPA(p.negetive.j, p.negetive.k, p.negetive.l, p.negetive.m)
             # coor(P,A) - coor(N,A)
             p.relevance = p.cpa - p.cna
-            # calculate reliability of the action and behavior
+            # calculate reliability of the action and behavior (Step is 1)
             p.reliability += calculate_reliability(p)
             p.current_reliability = calculate_reliability(p)
 
